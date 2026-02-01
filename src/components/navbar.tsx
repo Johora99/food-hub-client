@@ -145,7 +145,7 @@ const Navbar = ({
 }: Navbar1Props) => {
   return (
     <section className={cn("py-4", className)}>
-      <div className="container w-11/12 mx-auto lg:py-5">
+      <div className="container w-11/12 mx-auto lg:py-3">
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
           <div className="flex items-center gap-6">
@@ -156,7 +156,7 @@ const Navbar = ({
                 className="max-h-8 dark:invert"
                 alt={logo.alt}
               />
-              <span className="text-lg font-semibold tracking-tighter">
+              <span className="text-lg font-bold tracking-tighter text-orange-500">
                 {logo.title}
               </span>
             </a>
@@ -173,7 +173,7 @@ const Navbar = ({
             <Button asChild variant="outline" size="sm">
               <a href={auth.login.url}>{auth.login.title}</a>
             </Button>
-            <Button asChild size="sm">
+            <Button asChild size="sm" className="bg-orange-500 text-white">
               <a href={auth.signup.url}>{auth.signup.title}</a>
             </Button>
           </div>
