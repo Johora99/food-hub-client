@@ -69,7 +69,7 @@ export default function Hero() {
               <p className="max-w-xl text-2xl text-gray-200">
                 {item.content}
               </p>
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 text-lg">
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 text-lg cursor-pointer">
                 Order Now 
               </Button>
             </div>
