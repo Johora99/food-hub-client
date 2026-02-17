@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import TitleTwo from "../TitleTwo";
-import { Spinner } from "../ui/spinner";
+
 import { Meal } from "@/type/meal.type";
+import { Spinner } from "@/components/ui/spinner";
+import TitleTwo from "@/components/TitleTwo";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80";
@@ -34,7 +35,6 @@ export default function AllMeals() {
 
   return (
     <section className="py-12 px-6 md:px-12">
-      <TitleTwo title="Our Best Selling Products" />
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
         {meals.map((meal) => (
           <div
