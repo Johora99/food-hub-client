@@ -1,3 +1,9 @@
+"use client"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,12 +20,56 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import Link from "next/link"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const router = useRouter()
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError("")
+
+    try {
+      const res = await fetch(
+        "http://localhost:5000/api/auth/sign-in/email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", 
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      )
+
+      const result = await res.json()
+
+      if (res.ok) {
+        router.push("/")
+      } else {
+        setError(result.message || "Invalid credentials")
+      }
+
+    } catch (err) {
+      console.error(err)
+      setError("Failed to login. Server error.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -29,39 +79,74 @@ export function LoginForm({
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form>
+          <form onSubmit={handleLogin}>
             <FieldGroup>
+
+              {/* Email */}
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel>Email</FieldLabel>
                 <Input
-                  id="email"
                   type="email"
                   placeholder="Enter Your Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </Field>
+
+              {/* Password */}
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel>Password</FieldLabel>
                   <Link
                     href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                    className="ml-auto text-sm underline hover:underline"
                   >
-                    Forgot your password?
+                    Forgot password?
                   </Link>
                 </div>
-                <Input id="password" type="password" required />
+
+                <Input
+                  type="password"
+                  placeholder="Enter Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </Field>
+
+              {/* Error */}
+              {error && (
+                <p className="text-red-500 text-sm">{error}</p>
+              )}
+
+              {/* Buttons */}
               <Field>
-                <Button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white">Login</Button>
+                <Button
+                  type="submit"
+                  className="bg-orange-500 hover:bg-orange-600 text-white cursor-pointer"
+                  disabled={loading}
+                >
+                  {loading ? "Logging in..." : "Login"}
+                </Button>
+
                 <Button variant="outline" type="button">
                   Login with Google
                 </Button>
+
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <Link href="/signup" className="text-orange-500">Sign up</Link>
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    href="/signup"
+                    className="text-orange-500"
+                  >
+                    Sign up
+                  </Link>
                 </FieldDescription>
               </Field>
+
             </FieldGroup>
           </form>
         </CardContent>

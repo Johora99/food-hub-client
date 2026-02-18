@@ -3,6 +3,7 @@ export interface Meal {
   title: string;
   content: string;
   category: string;
+  dietary: string;
   price: number;
   image?: string;
   quantity: number;
